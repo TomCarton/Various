@@ -1,5 +1,6 @@
 // sort methods
 // including a simple sorting of an array of bytes using an index table
+// I was doing a lot on my old Atari ST in my childhood
 // (which is way faster than quicksort and bubblesort)
 //
 // written by Thomas CARTON
