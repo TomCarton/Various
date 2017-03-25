@@ -1,2 +1,3 @@
-# simpleSort
-A simple sort algorithm I was doing a lot on my old Atari ST in my childhood
+# Various
+
+* **simple sort**: including a simple algorithm I was doing a lot on my old Atari ST in my childhood
