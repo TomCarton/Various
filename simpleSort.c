@@ -1,6 +1,6 @@
-// sort
-// simple sorting of an array of bytes
-// way faster than quicksort and bubblesort
+// sort methods
+// including a simple sorting of an array of bytes using an index table
+// (which is way faster than quicksort and bubblesort)
 //
 // written by Thomas CARTON
 //
@@ -10,14 +10,31 @@
 #include <memory.h>
 
 
-// sort an array of unsigned char
-void sort(unsigned char *array, unsigned int size)
+// sort an array of unsigned char using bubble sort
+void bubbleSort(unsigned char *array, unsigned int size)
+{
+    for (unsigned int c = 0; c < size - 1; ++c)
+    {
+        for (unsigned int d = 0; d < size - c - 1; ++d)
+        {
+            if (array[d] > array[d + 1])
+	    {
+                unsigned char swap = array[d];
+                array[d] = array[d + 1];
+                array[d + 1] = swap;
+            }
+        }
+    }	
+}
+
+// sort an array of unsigned char using an index table
+void indexSort(unsigned char *array, unsigned int size)
 {
     unsigned char *p = array;
 
     unsigned char *inc = (unsigned char *)malloc(256);
     memset(inc, 0, 256);
-	
+
     for (unsigned int i = 0; i < size; ++i) ++inc[array[i]];
     for (unsigned int i = 0; i < 256; ++i) while (inc[i]--) *p++ = i;
 
@@ -27,16 +44,13 @@ void sort(unsigned char *array, unsigned int size)
 
 // helper to print the array
 
-void display(unsigned char *array, unsigned int size)
+void display(const char *title, unsigned char *array, unsigned int size)
 {
-    printf("unsigned char array[] = {");
+    printf("unsigned char %s[] = \n{", title);
 
-    for (unsigned int i = 0; i < size; ++i)
-    {
-	printf("%3d, ", array[i]);
-    }
+    for (unsigned int i = 0; i < size; ++i) printf("%s0x%02X, ", i % 16 ? "" : "\n\t", array[i]);
 
-    printf("};\n");
+    printf("\n};\n");
 }
 
 
@@ -44,12 +58,22 @@ void display(unsigned char *array, unsigned int size)
 
 int main(int argc, char *argv[])
 {
-    unsigned char values[] = { 5, 1, 37, 2, 7, 15, 27, 23, 0, 2, 23, 0, 23, 4, };
-    unsigned size = sizeof(values);
+    unsigned size = 100;
+    unsigned char *randomValues = (unsigned char *)malloc(size);
+    for (unsigned int i = 0; i < size; ++i) randomValues[i] = random();
+    display("random", randomValues, size);
 
-    display(values, size);
+    unsigned char *values = (unsigned char *)malloc(size);
 
-    sort(values, size);
+    memcpy(values, randomValues, size);
+    bubbleSort(values, size);
+    display("bubbleSorted", values, size);
 
-    display(values, size);
+    memcpy(values, randomValues, size);
+    indexSort(values, size);
+    display("indexSorted", values, size);
+
+    free(values);
+
+    free(randomValues);
 }
